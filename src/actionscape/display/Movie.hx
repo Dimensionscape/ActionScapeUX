@@ -4,11 +4,13 @@ package actionscape.display;
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Scene extends Composition
+class Movie extends Scene 
+{
 
 	public function new() 
 	{
 		super();
+		
 	}
 	
 }

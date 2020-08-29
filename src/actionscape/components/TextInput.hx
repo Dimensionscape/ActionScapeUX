@@ -1,14 +1,15 @@
-package actionscape.display;
+package actionscape.components;
 
 /**
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Scene extends Composition
+class TextInput 
+{
 
 	public function new() 
 	{
-		super();
+		
 	}
 	
 }

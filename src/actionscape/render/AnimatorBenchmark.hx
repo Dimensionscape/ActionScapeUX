@@ -1,5 +1,5 @@
 package actionscape.render;
-import actionscape.core.Actionscape;
+import actionscape.core.Projector;
 import actionscape.display.Motion;
 import actionscape.events.FrameEvent;
 import openfl.Lib;
@@ -29,7 +29,7 @@ class Animator extends EventDispatcher
 		maxY = Lib.current.stage.stageHeight-32;
 		gravity = 0.5;
 		current = this;
-		Actionscape.current.root.addEventListener(FrameEvent.FRAME_UPDATE, __onFrameUpdate);
+		Projector.current.root.addEventListener(FrameEvent.FRAME_UPDATE, __onFrameUpdate);
 		
 	}
 	

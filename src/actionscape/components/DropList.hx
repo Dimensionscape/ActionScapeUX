@@ -1,14 +1,15 @@
-package actionscape.display;
+package actionscape.components;
 
 /**
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Scene extends Composition
+class DropList 
+{
 
 	public function new() 
 	{
-		super();
+		
 	}
 	
 }

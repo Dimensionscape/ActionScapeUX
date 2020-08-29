@@ -18,14 +18,14 @@ import openfl.events.MouseEvent;
  * @author Christopher Speciale, Dimensionscape LLC
  */
 @:access(actionscape.display.DisplayTargetContainer)
-class Actionscape extends EventDispatcher
+class Projector extends EventDispatcher
 {
 	public var root:DisplayTargetContainer;
 	private var __sprite:Sprite;
 	private var __touchState:String = TouchState.TOUCH_OUT;
 	private var __passedTime:Float = 0;
 	private var __previousTime:Float = 0;
-	public static var current:Actionscape;
+	public static var current:Projector;
 	public static var animator:Animator;
 	public var drawCalls:Int =0;
 	public function new(stage:Stage, rootClass:Class<DisplayTargetContainer>) 

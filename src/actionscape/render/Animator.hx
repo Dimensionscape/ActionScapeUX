@@ -1,5 +1,5 @@
 package actionscape.render;
-import actionscape.core.Actionscape;
+import actionscape.core.Projector;
 import actionscape.display.Motion;
 import actionscape.events.FrameEvent;
 import openfl.Lib;
@@ -21,7 +21,7 @@ class Animator extends EventDispatcher
 		super();
 	
 		current = this;
-		Actionscape.current.root.addEventListener(FrameEvent.FRAME_UPDATE, __onFrameUpdate);
+		Projector.current.root.addEventListener(FrameEvent.FRAME_UPDATE, __onFrameUpdate);
 		
 	}
 	

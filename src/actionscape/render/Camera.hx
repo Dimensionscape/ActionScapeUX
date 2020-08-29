@@ -1,14 +1,15 @@
-package actionscape.display;
+package actionscape.render;
 
 /**
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Scene extends Composition
+class Camera 
+{
 
 	public function new() 
 	{
-		super();
+		
 	}
 	
 }

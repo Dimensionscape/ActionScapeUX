@@ -1,14 +1,15 @@
-package actionscape.display;
+package actionscape.core;
 
 /**
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Scene extends Composition
+class Multiplex 
+{
 
 	public function new() 
 	{
-		super();
+		
 	}
 	
 }
