@@ -1,6 +1,7 @@
 package actionscape.core;
 import actionscape.display.DisplayTarget;
 import actionscape.display.DisplayTargetContainer;
+import actionscape.display.Movie;
 import actionscape.events.FrameEvent;
 import actionscape.events.TouchEvent;
 import actionscape.render.Animator;
@@ -28,7 +29,7 @@ class Projector extends EventDispatcher
 	public static var current:Projector;
 	public static var animator:Animator;
 	public var drawCalls:Int =0;
-	public function new(stage:Stage, rootClass:Class<DisplayTargetContainer>) 
+	public function new(stage:Stage, rootClass:Class<Movie>) 
 	{
 		super();
 		current = this;		

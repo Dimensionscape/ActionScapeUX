@@ -8,7 +8,8 @@ class Composition extends DisplayTargetContainer
 {
 	@:isVar public var smoothing(get, set):Bool = true;
 	
-	@isVar public var pivotX(get, set):Float = 0;
+	@:isVar public var pivotX(get, set):Float = 0;
+	@:isVar public var pivotY(get, set):Float = 0;
 	
 	private function get_pivotX():Float{
 		return pivotX;
