@@ -8,7 +8,7 @@ import openfl.geom.Rectangle;
  * @author Christopher Speciale, Dimensionscape LLC
  */
 @:access(actionscape.display._internal.Scale9Grid)
-class Image extends DisplayTarget
+class Image extends DisplayModel
 {
 	
 	@:isVar public var tile:Tile;

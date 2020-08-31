@@ -1,5 +1,5 @@
 package actionscape.display;
-import actionscape.display.DisplayTarget;
+import actionscape.display.DisplayModel;
 import openfl.display.Tile;
 import openfl.geom.Rectangle;
 
@@ -7,7 +7,7 @@ import openfl.geom.Rectangle;
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Motion extends DisplayTarget
+class Motion extends DisplayModel
 {
 	var frames:Array<Tile>;
 	var tile:Tile;

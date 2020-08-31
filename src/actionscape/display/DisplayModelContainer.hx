@@ -1,4 +1,5 @@
 package actionscape.display;
+import actionscape.core.Projector;
 import actionscape.events.TouchEvent;
 import actionscape.touch.TouchState;
 import openfl.Lib;
@@ -14,10 +15,10 @@ import openfl.geom.Rectangle;
  * @author Christopher Speciale, Dimensionscape LLC
  */
 //@:access(
-class DisplayTargetContainer extends DisplayTarget
+class DisplayModelContainer extends DisplayModel
 {
 	private var __tilemap:Tilemap;
-	private var __children:Array<DisplayTarget> = [];	
+	private var __children:Array<DisplayModel> = [];	
 	
 	override private function get_height():Float{
 		var tempHeight:Float = 0;
@@ -47,7 +48,7 @@ class DisplayTargetContainer extends DisplayTarget
 	{
 		super();
 		#if !html5
-		if (Lib.current.stage.window.context.type == "cairo") __tilemap = new Tilemap(8388607, 8388607);
+		if (Projector.current.renderMode == "software") __tilemap = new Tilemap(8388607, 8388607);
 		else __tilemap = new Tilemap(0x3FFFFFFF, 0x3FFFFFFF);
 		#else
 		__tilemap = new Tilemap(0x3FFFFFFF, 0x3FFFFFFF);		
@@ -112,7 +113,7 @@ class DisplayTargetContainer extends DisplayTarget
 		return bool;
 	}
 
-	public function addChild(displayTarget:DisplayTarget):DisplayTarget
+	public function addChild(displayTarget:DisplayModel):DisplayModel
 	{
 		var tileContainer:TileContainer = displayTarget.__tileContainer;
 		__children.push(displayTarget);
@@ -122,7 +123,7 @@ class DisplayTargetContainer extends DisplayTarget
 		return displayTarget;
 	}
 	
-	public function removeChild(displayTarget:DisplayTarget):DisplayTarget
+	public function removeChild(displayTarget:DisplayModel):DisplayModel
 	{
 		__children.remove(displayTarget);
 		__tileContainer.removeTile(displayTarget.__tileContainer);

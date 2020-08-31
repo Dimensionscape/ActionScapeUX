@@ -1,15 +1,19 @@
 package actionscape.display;
+import openfl.display.DisplayObject;
+import openfl.display.Tilemap;
 
 /**
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Composition extends DisplayTargetContainer
+class Composition extends DisplayModelContainer
 {
 	@:isVar public var smoothing(get, set):Bool = true;
 	
 	@:isVar public var pivotX(get, set):Float = 0;
 	@:isVar public var pivotY(get, set):Float = 0;
+	private var __hasDisplayObjects:Bool = false;
+
 	
 	private function get_pivotX():Float{
 		return pivotX;
@@ -37,7 +41,7 @@ class Composition extends DisplayTargetContainer
 	
 	public function new() 
 	{
-		super();
-	}
+		super();		
+	}	
 	
 }

@@ -1,5 +1,6 @@
 package actionscape.display;
 import haxe.ds.StringMap;
+import openfl.display.Sprite;
 import openfl.display.Window;
 import openfl.geom.Rectangle;
 
@@ -7,7 +8,7 @@ import openfl.geom.Rectangle;
  * ...
  * @author Christopher Speciale, Dimensionscape LLC
  */
-class Movie extends DisplayTargetContainer 
+class Movie extends Composite 
 {
 	
 	public var currentScene:Int;
@@ -23,9 +24,7 @@ class Movie extends DisplayTargetContainer
 		scenes = [];
 		currentScene = -1;
 		__sceneMap = new StringMap();
-		isPlaying = false;
-		
-		
+		isPlaying = false;		
 	}
 	
 	public function pause():Void{
@@ -79,6 +78,7 @@ class Movie extends DisplayTargetContainer
 	public function getSceneByName(name:Scene):Void{
 		
 	}
-
+	
+	
 	
 }

@@ -8,8 +8,8 @@ import openfl.display.Sprite;
  */
 class Scene extends Composition 
 {
-	private var __sprite:Sprite;
 	private var __allowDisplayObjects:Bool;
+	private var __sprite:Sprite;
 	public var id:Int;
 	public var label:String;
 	public var onInit:Function;
