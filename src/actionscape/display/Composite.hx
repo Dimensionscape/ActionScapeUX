@@ -25,18 +25,34 @@ nativeBackground containers.
  **/
 class Composite extends DisplayModelContainer 
 {
-	private var __sprite:Sprite;
-	private var __hasDisplayObject:Bool = false;
-
+	public var nativeBackground(get,null):Sprite;
+	public var nativeForeground(get,null):Sprite;
+	private var __compositeContainer:Sprite;
+	
+	private function get_nativeBackground():Sprite{
+		return nativeBackground;
+	}
+	
+	private function get_nativeForeground():Sprite{
+		return nativeForeground;
+	}
+	
 	public function new() 
 	{
 		super();
-		__sprite = new Sprite();
+		nativeBackground = new Sprite();
+		nativeForeground = new Sprite();
+		__compositeContainer = new Sprite();
+		var sprite:Sprite = new Sprite();		
+		sprite.addChild(nativeBackground);
+		sprite.addChild(__compositeContainer);
+		sprite.addChild(nativeBackground);
+		displayObject = sprite;
 		
 	}
 	
 	override public function addChild(displayModel:DisplayModel):DisplayModel{		
-		__sprite.addChild(displayModel.getDisplayObject());
+		__compositeContainer.addChild(displayModel.displayObject);
 		__children.push(displayModel);
 		return displayModel;
 	}
@@ -45,8 +61,8 @@ class Composite extends DisplayModelContainer
 	override public function removeChild(displayTarget:DisplayModel):DisplayModel
 	{
 		__children.remove(displayTarget);
-		__tileContainer.removeTile(displayTarget.__tileContainer);
-		__update();
+		__compositeContainer.removeChild(displayTarget.displayObject);	
+		//displayTarget.__disposeDisplayObject();
 		return displayTarget;
 	}	
 }

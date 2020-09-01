@@ -20,16 +20,25 @@ class DisplayModel extends EventDispatcher
 	@:isVar public var y(get, set):Float = 0;
 	@:isVar public var parent(get, null):DisplayModel;
 	@:isVar public var name(get, set):String = "";
+	@:isVar public var displayObject(get, null):DisplayObject;
+	
+	private var __isLeaf:Bool = true;
+	
+	private function get_displayObject():DisplayObject{
+		if (displayObject == null){
+			cast(displayObject = cast new Tilemap(8000000, 8000000), Tilemap).addTile(__tileContainer);
+		}
+		return displayObject;
+	}
+	
 	public function new() 
 	{
 		super();		
 		__tileContainer = new TileContainer();		
 	}
 	
-	public function getDisplayObject():DisplayObject{
-		var tilemap:Tilemap = new Tilemap(8000000, 8000000);
-		tilemap.addTile(__tileContainer);
-		return tilemap;
+	private function __disposeDisplayList():Void{
+		displayObject = null;
 	}
 	
 	private function get_name():String{

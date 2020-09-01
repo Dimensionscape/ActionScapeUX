@@ -14,7 +14,7 @@ class DisplayTarget extends DisplayModel
 		super();
 	}
 	
-	override public function getDisplayObject():DisplayObject{
+	override private function get_displayObject():DisplayObject{		
 		return __displayObject;
 	}
 	
