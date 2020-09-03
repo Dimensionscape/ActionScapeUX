@@ -16,6 +16,10 @@ class Image extends DisplayModel
 	private var __scale9Grid:Scale9Grid;
 	private var __originBounds:Rectangle;
 	
+	
+	public function getBounds(displayModelContainer:DisplayModelContainer):Rectangle{
+		return __tileContainer.getBounds(displayModelContainer.__tileContainer);
+	}
 	public function get_scale9Grid():Rectangle{
 		return scale9Grid;
 	}
@@ -27,7 +31,7 @@ class Image extends DisplayModel
 		__scale9Grid = new Scale9Grid(tile.tileset, tile.tileset.getRect(tile.id), value);
 		__tileContainer.removeTileAt(0);
 		__tileContainer.addTile(__scale9Grid.__tileContainer);
-		parent.__update();
+
 		width = width;
 		height = height;
 		} else {
@@ -44,7 +48,6 @@ class Image extends DisplayModel
 	override private function set_height(value:Float):Float{
 		if (__scale9Grid != null) __scale9Grid.__setHeight(value);
 		else __tileContainer.scaleY = value / __originBounds.height;
-		if(parent!=null) parent.__update();
 		return height = value;
 	}
 	
@@ -55,8 +58,6 @@ class Image extends DisplayModel
 	override private function set_width(value:Float):Float{
 		if (__scale9Grid != null) __scale9Grid.__setWidth(value);
 		else __tileContainer.scaleX =  value / __originBounds.width;		
-		
-		if (parent != null) parent.__update();
 		return width = value;
 	}	
 

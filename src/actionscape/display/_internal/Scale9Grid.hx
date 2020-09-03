@@ -95,79 +95,61 @@ import openfl.geom.Rectangle;
 	
 	private function __setWidth(value:Float):Void{
 		__tileContainer.scaleX = 1;
-		var tile:Tile = __partition[0][1];
-		var tileWidth:Float = tile.data.width;
-		var originWidth:Float = __originBounds.width;
-		var percent:Float = tileWidth / originWidth;
 		
-		var scale:Float = value / __originBounds.width;
+		var tile00:Tile = __partition[0][0];
+		var tile01:Tile = __partition[0][1];
+		var tile02:Tile = __partition[0][2];
+		var tile11:Tile = __partition[1][1];
+		var tile12:Tile = __partition[1][2];
+		var tile21:Tile = __partition[2][1];
+		var tile22:Tile = __partition[2][2];
 		
-		var scaleX:Float = scale / percent;
-		tile.scaleX = scaleX;		
+		var width:Float = tile00.data.width;
+			
+		var scale :Float = (value - (width + tile02.data.width)) / tile01.data.width;
+		tile01.scaleX = scale;
+		tile01.x = width;
+		var x:Float = tile01.x + tile01.width;	
+		tile02.x = x;	
 		
-		var prevX:Float = tile.getBounds(tile.parent).width;		
-		tile = __partition[0][2];
-		tile.x = prevX;
+		tile11.scaleX = scale;
+		tile11.x = width;
 		
+		tile12.x = x;
 		
-		tile = __partition[1][1];
-		tileWidth = tile.data.width;
-		percent = tileWidth / originWidth;
-		scaleX = scale / percent;
-		tile.scaleX = scaleX;
+		tile21.scaleX = scale;
+		tile21.x = width;
 		
-		prevX = tile.getBounds(tile.parent).width;		
-		tile = __partition[1][2];
-		tile.x = prevX;
-		
-		tile = __partition[2][1];
-		tileWidth = tile.data.width;
-		percent = tileWidth / originWidth;
-		scaleX = scale / percent;
-		tile.scaleX = scaleX;
-		
-		prevX = tile.getBounds(tile.parent).width;		
-		tile = __partition[2][2];
-		tile.x = prevX;
-	
+		tile22.x = x;	
 	}
 	
 	private function __setHeight(value:Float):Void{
 		__tileContainer.scaleY = 1;
-		var tile:Tile = __partition[1][0];
-		var tileHeight:Float = tile.data.height;
-		var originHeight:Float = __originBounds.height;
-		var percent:Float = tileHeight / originHeight;
+		var tile00:Tile = __partition[0][0];
+		var tile10:Tile = __partition[1][0];
+		var tile20:Tile = __partition[2][0];
+		var tile11:Tile = __partition[1][1];
+		var tile12:Tile = __partition[1][2];
+		var tile21:Tile = __partition[2][1];
+		var tile22:Tile = __partition[2][2];
 		
-		var scale:Float = value / __originBounds.height;
+		var height:Float = tile00.data.height;
+			
+		var scale :Float = (value - (height + tile20.data.height)) / tile10.data.height;
+		tile10.scaleY = scale;
+		tile10.y = height;
+		var y:Float = tile10.y + tile10.height;	
+		tile20.y = y;	
 		
-		var scaleY:Float = scale / percent;
-		tile.scaleY = scaleY;		
+		tile11.scaleY = scale;
+		tile11.y = height;
 		
-		var prevY:Float = tile.getBounds(tile.parent).height;		
-		tile = __partition[2][0];
-		tile.y = prevY;
+		tile12.scaleY = scale;
+		tile12.y = height;		
 		
+		tile21.y = y;
 		
-		tile = __partition[1][1];
-		tileHeight = tile.data.height;
-		percent = tileHeight / originHeight;
-		scaleY = scale / percent;
-		tile.scaleY = scaleY;
-		
-		prevY = tile.getBounds(tile.parent).height;		
-		tile = __partition[2][1];
-		tile.y = prevY;
-		
-		tile = __partition[1][2];
-		tileHeight = tile.data.height;
-		percent = tileHeight / originHeight;
-		scaleY = scale / percent;
-		tile.scaleY = scaleY;
-		
-		prevY = tile.getBounds(tile.parent).height;		
-		tile = __partition[2][2];
-		tile.y = prevY;
+		tile22.y = y;	
 	
 	}
 	
