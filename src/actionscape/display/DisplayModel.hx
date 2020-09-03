@@ -1,5 +1,6 @@
 package actionscape.display;
 import actionscape.events.TouchEvent;
+import actionscape.touch.TouchState;
 import haxe.ds.Map;
 import openfl.display.DisplayObject;
 import openfl.display.Sprite;
@@ -18,15 +19,18 @@ class DisplayModel extends EventDispatcher
 	@:isVar public var height(get, set):Float = 0;
 	@:isVar public var x(get, set):Float = 0;
 	@:isVar public var y(get, set):Float = 0;
-	@:isVar public var parent(get, null):DisplayModel;
+	@:isVar public var parent(get, null):DisplayModelContainer;
 	@:isVar public var name(get, set):String = "";
 	@:isVar public var displayObject(get, null):DisplayObject;
+	@:isVar public var touchable:Bool = false;
 	
+	private var __touchState:String = TouchState.TOUCH_OUT;
 	private var __isLeaf:Bool = true;
 	
 	private function get_displayObject():DisplayObject{
 		if (displayObject == null){
 			cast(displayObject = cast new Tilemap(8000000, 8000000), Tilemap).addTile(__tileContainer);
+			cast(displayObject, Tilemap).smoothing = false;
 		}
 		return displayObject;
 	}
@@ -82,10 +86,10 @@ class DisplayModel extends EventDispatcher
 		return value;
 	}
 	
-	private function get_parent():DisplayModel{
+	private function get_parent():DisplayModelContainer{
 		return parent;
 	}
-	private function set_parent(parent:DisplayModel):DisplayModel{
+	private function set_parent(parent:DisplayModelContainer):DisplayModelContainer{
 		return this.parent = parent;
 	}
 	

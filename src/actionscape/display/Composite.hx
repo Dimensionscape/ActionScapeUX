@@ -1,5 +1,6 @@
 package actionscape.display;
 import openfl.display.Sprite;
+import openfl.events.Event;
 
 /**
  * ...
@@ -46,6 +47,7 @@ class Composite extends DisplayModelContainer
 		var sprite:Sprite = new Sprite();		
 		sprite.addChild(nativeBackground);
 		sprite.addChild(__compositeContainer);
+		sprite.addEventListener(Event.ADDED_TO_STAGE, __onAddedToStage);
 		sprite.addChild(nativeBackground);
 		displayObject = sprite;
 		
@@ -54,6 +56,7 @@ class Composite extends DisplayModelContainer
 	override public function addChild(displayModel:DisplayModel):DisplayModel{		
 		__compositeContainer.addChild(displayModel.displayObject);
 		__children.push(displayModel);
+		displayModel.parent = this;
 		return displayModel;
 	}
 	
@@ -65,4 +68,16 @@ class Composite extends DisplayModelContainer
 		//displayTarget.__disposeDisplayObject();
 		return displayTarget;
 	}	
+	
+	private function __onAddedToStage(e:Event):Void{
+		displayObject.addEventListener(Event.ADDED_TO_STAGE, __onAddedToStage);
+		displayObject.removeEventListener(Event.ADDED_TO_STAGE, __onAddedToStage);
+		dispatchEvent(e);
+	}
+	
+	private function __onRemovedFromStage(e:Event):Void{
+		displayObject.addEventListener(Event.ADDED_TO_STAGE, __onAddedToStage);
+		displayObject.removeEventListener(Event.REMOVED_FROM_STAGE, __onRemovedFromStage);
+		dispatchEvent(e);
+	}
 }

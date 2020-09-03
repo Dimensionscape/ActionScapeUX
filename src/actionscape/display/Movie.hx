@@ -1,7 +1,10 @@
 package actionscape.display;
 import haxe.ds.StringMap;
+import openfl.Lib;
 import openfl.display.Sprite;
+import openfl.display.Stage;
 import openfl.display.Window;
+import openfl.events.Event;
 import openfl.geom.Rectangle;
 
 /**
@@ -16,8 +19,30 @@ class Movie extends Composite
 	public var isPlaying:Bool;
 	public var window:Window;
 	public var viewport:Rectangle;
+	public var stage:Stage;
 	
 	private var __sceneMap:StringMap<Int>;
+	
+	override private function get_height():Float
+	{		
+		return height;
+	}
+
+	override private function set_height(value:Float):Float
+	{
+		return height = value;
+	}
+
+	override private function get_width():Float
+	{
+		return width;
+	}
+
+	override private function set_width(value:Float):Float
+	{
+		return width = value;
+	}
+	
 	public function new() 
 	{
 		super();
@@ -25,6 +50,9 @@ class Movie extends Composite
 		currentScene = -1;
 		__sceneMap = new StringMap();
 		isPlaying = false;		
+		touchable = true;
+		width = Lib.current.stage.stageWidth;
+		height = Lib.current.stage.stageHeight;
 	}
 	
 	public function pause():Void{
@@ -79,6 +107,6 @@ class Movie extends Composite
 		
 	}
 	
-	
+
 	
 }

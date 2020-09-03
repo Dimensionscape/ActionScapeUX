@@ -84,16 +84,22 @@ class DisplayModelContainer extends DisplayModel
 			var touchEvent:TouchEvent = cast event;
 			touchEvent.touch.__x += this.x;
 			touchEvent.touch.__y += this.y;
-			if (event.target == null)
+			if (Std.is(this, Movie))
 			{
-				
+				//trace("test");
 				var touch:Touch = touchEvent.touch;
 				touch.__touchRect.setTo(x, y, width, height);
 				touch.__touchPoint.setTo(touchEvent.touch.globalX, touchEvent.touch.globalY);
 				if (touchEvent.touch.__touchRect.containsPoint(touchEvent.touch.__touchPoint))
 				{
-					isTouching = true;					
-				}
+					touch.touchTarget = this;
+					//touch.__lastTarget.push(this);
+					//touch.__lastState.push((touch.touchState == TouchState.TOUCH_OUT)?TouchState.TOUCH_OVER:touch.touchState);
+					//touch.__lastX.push(touch.__touchRect.x);
+					//touch.__lastY.push(touch.__touchRect.y);
+					//touch.__event = touchEvent;
+					isTouching = true;
+				} 
 			}
 			else
 			{
@@ -105,78 +111,108 @@ class DisplayModelContainer extends DisplayModel
 		{
 			for (child in __children)
 			{
-				if (isTouching)
+				if (event.type == TouchEvent.TOUCH)
 				{
-					if (event.type == TouchEvent.TOUCH)
+					if (child.touchable)
 					{
-						var touchEvent:TouchEvent = cast event;
-						var touch:Touch = touchEvent.touch;	
-						
-						touch.__touchRect.setTo(touch.__x + child.x, touch.__y +  child.y, child.width, child.height);						
-						var tempState:String = touchEvent.touch.touchState;
-						if (touch.__touchRect.containsPoint(touch.__touchPoint))
-						{							
-							touch.touchTarget = child;
-							touchEvent.touch.touchState = (touchEvent.touch.touchState == TouchState.TOUCH_OUT)?TouchState.TOUCH_OVER:touchEvent.touch.touchState;
-							child.dispatchEvent(event);
-						}
-						else
+						if (isTouching)
 						{
-							touchEvent.touch.touchState = TouchState.TOUCH_OUT;
-							//var tempDispatcher:IEventDispatcher = __targetDispatcher;
-							child.dispatchEvent(event);
-							touchEvent.touch.touchState = tempState;
-							//__targetDispatcher = tempDispatcher;
+							var touchEvent:TouchEvent = cast event;
+							var touch:Touch = touchEvent.touch;
+							touch.__touchRect.setTo(touch.__x + child.x, touch.__y +  child.y, child.width, child.height);
+							var tempState:String = touchEvent.touch.touchState;
+							if (touch.__touchRect.containsPoint(touch.__touchPoint))
+							{
+								touch.touchTarget = child;
+								//touch.__lastTarget.push(child);
+								touch.touchState = (touch.touchState == TouchState.TOUCH_OUT)?TouchState.TOUCH_OVER:touch.touchState;
+								child.__touchState = touch.touchState;
+								//touch.__lastState.push(touch.touchState);
+								//touch.__lastX.push(touch.__touchRect.x);
+								//touch.__lastY.push(touch.__touchRect.y);
+								child.dispatchEvent(event);
+							}
+							else
+							{
+								
+								if (child.__touchState != TouchState.TOUCH_OUT){
+									//trace("out", child);
+									child.__touchState = TouchState.TOUCH_OUT;
+									touchEvent.touch.touchState = TouchState.TOUCH_OUT;
+									if (child.__isLeaf) child.dispatchEvent(event);
+									else child.dispatchEvent(event);
+									//touchEvent.touch.touchState = TouchState.TOUCH_OVER;
+								}
+							}
 						}
 					}
-					else
-					{
-						//	child.__targetDispatcher = event.target;
-						child.dispatchEvent(event);
-					}
+
 				}
+				else child.dispatchEvent(event);
+
 			}
 		}
-
 		if (event.type == TouchEvent.TOUCH)
 		{
 			var touchEvent:TouchEvent = cast event;
 			if (isTouching)
 			{
-				if (!Std.is(touchEvent.touch.touchTarget, DisplayModelContainer)){				
-					touchEvent.touch.touchState = (touchEvent.touch.touchState == TouchState.TOUCH_OUT)?TouchState.TOUCH_OVER:touchEvent.touch.touchState;
-				
-				return super.dispatchEvent(touchEvent);
-				}
-			} else {
+				if (touchEvent.touch.touchTarget != null)
+					if (touchEvent.touch.touchTarget.__isLeaf)
+					{
+						var touchTarget:DisplayModel = touchEvent.touch.touchTarget;
+						touchEvent.touch.touchState = (touchEvent.touch.touchState == TouchState.TOUCH_OUT)?TouchState.TOUCH_OVER:touchEvent.touch.touchState;						
+						__targetDispatcher = touchTarget;
+						super.dispatchEvent(touchEvent);
+						touchEvent.touch.touchTarget = touchEvent.touch.touchTarget.parent;
+						var bool:Bool = super.dispatchEvent(touchEvent);	
+						 touchEvent.touch.touchTarget = touchTarget;
+						 __targetDispatcher = null;
+						return bool;
+					}
+					else if (touchEvent.touch.touchState == TouchState.TOUCH_OUT) return super.dispatchEvent(touchEvent);
+			}
+			else
+			{
 				touchEvent.touch.touchState = TouchState.TOUCH_OUT;
 				return super.dispatchEvent(touchEvent);
 			}
+		}
+		else return super.dispatchEvent(event);
 
-		} else return super.dispatchEvent(event);
-		
 		return false;
-	
 	}
 
-	public function addChild(displayTarget:DisplayModel):DisplayModel
+	public function addChild(displayModel:DisplayModel):DisplayModel
 	{
-		var tileContainer:TileContainer = displayTarget.__tileContainer;
-		__children.push(displayTarget);
+		var tileContainer:TileContainer = displayModel.__tileContainer;
+		__children.push(displayModel);
 		__tileContainer.addTile(tileContainer);
 		__update();
-		displayTarget.set_parent(this);
-		return displayTarget;
+		displayModel.parent = this;
+		return displayModel;
 	}
 
-	public function removeChild(displayTarget:DisplayModel):DisplayModel
+	public function removeChild(displayModel:DisplayModel):DisplayModel
 	{
-		__children.remove(displayTarget);
-		__tileContainer.removeTile(displayTarget.__tileContainer);
+		__children.remove(displayModel);
+		__tileContainer.removeTile(displayModel.__tileContainer);
 		__update();
-		return displayTarget;
+		return displayModel;
 	}
+	
+	private function __superDispatchEvent(event:TouchEvent):Bool{
+		if (__targetDispatcher != null)
+		{
+			event.target = __targetDispatcher;
+		}
+		else
+		{
+			event.target = this;
+		}
 
+		return super.dispatchEvent(event);
+	}
 	override private function __update():Void
 	{
 		super.__update();

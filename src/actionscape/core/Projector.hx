@@ -43,12 +43,14 @@ class Projector extends EventDispatcher
 		current = this;
 		renderMode = Application.current.window.context.attributes.hardware ? "hardware" : "software";
 		root = Type.createInstance(rootClass, []);
+		root.stage = stage;
 		__sprite = cast root.displayObject;
-		(__stage = stage).addChild(__sprite);
-		__stage.addChild(__stage.getChildAt(1));
+		(__stage = stage).addChild(__sprite);		
 		
 		animator = new Animator();
 
+		stage.addEventListener(Event.ENTER_FRAME, __frameUpdate);
+		
 		stage.addEventListener(MouseEvent.MOUSE_DOWN, function(e:MouseEvent)
 		{
 			__touchState = TouchState.TOUCH_DOWN;
@@ -63,7 +65,7 @@ class Projector extends EventDispatcher
 			var touchEvent:TouchEvent = new TouchEvent(TouchEvent.TOUCH, touch, true, true);
 			root.dispatchEvent(touchEvent);
 		});
-		stage.addEventListener(Event.ENTER_FRAME, __frameUpdate);
+		
 	}
 
 	public function showStats(enabled:Bool):Void
@@ -81,12 +83,13 @@ class Projector extends EventDispatcher
 
 	private function __frameUpdate(e:Event):Void
 	{
-
-		//var touch:Touch = new Touch(__sprite.mouseX, __sprite.mouseY, __touchState);
-		//var touchEvent:TouchEvent = new TouchEvent(TouchEvent.TOUCH, touch, true, true);
-		//root.dispatchEvent(touchEvent);
-		//__touchState = TouchState.TOUCH_OUT;
-
+		if (__touchState != TouchState.TOUCH_DOWN && __touchState != TouchState.TOUCH_UP){
+			var touch:Touch = new Touch(__sprite.mouseX, __sprite.mouseY, __touchState);
+			var touchEvent:TouchEvent = new TouchEvent(TouchEvent.TOUCH, touch, true, true);
+			root.dispatchEvent(touchEvent);		
+		}
+		__touchState = TouchState.TOUCH_OUT;
+	
 		var currentTime = getTimer();
 		__passedTime = currentTime - __previousTime;
 		__previousTime = currentTime;
